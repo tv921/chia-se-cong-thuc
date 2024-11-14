@@ -1,0 +1,69 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Client (React)
+client/build/
+client/node_modules/
+client/.env
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+client/public/static
+client/public/asset-manifest.json
+client/public/manifest.json
+client/public/service-worker.js
+
+# Server (Node.js/Express)
+server/node_modules/
+server/.env
+server/.env.local
+server/.env.development.local
+server/.env.test.local
+server/.env.production.local
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor specific files
+.idea/
+.vscode/
+*.swp
+
+# Build/Production files
+client/build/
+server/dist/
+
+# Coverage reports
+coverage/
+
+# Temporary files and folders
+tmp/
+temp/
+*.temp
+*.tmp
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Miscellaneous
+*.log
+*.lock
+__pycache__/
+*.py[cod]
+*.sqlite3
