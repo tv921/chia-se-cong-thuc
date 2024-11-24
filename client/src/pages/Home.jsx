@@ -29,23 +29,35 @@ function Home() {
   return (
     <>
       {/* Content Area */}
-      <div className="flex-1 p-6 bg-gray-100">
+  <div className="flex-1 p-6 bg-gray-100">
         <RecipeSlider recipes={recipe} />
-      </div>
-      <SearchBar query={query} setQuery={setQuery} searchRecipes={searchRecipes} />
-      <div className="container">
-        <ul>
-          {recipes.map(recipe => (
-            <li key={recipe._id} style={{ marginBottom: '20px' }}>
-              <Link to={`/recipes/${recipe._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h2>{recipe.title}</h2>
-                <p>Thời gian nấu: {recipe.cookingTime}</p>
-                {recipe.images && <img src={recipe.images} alt={recipe.title} style={{ width: '100px', height: 'auto' }} />}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div> 
+    </div>
+        <SearchBar query={query} setQuery={setQuery} searchRecipes={searchRecipes} />
+    <div className="container mx-auto py-8">
+    <ul className="space-y-6">
+      {recipes.map((recipe) => (
+        <li
+          key={recipe._id}
+          className="bg-white shadow-md rounded-lg hover:shadow-lg transition-shadow duration-300 p-4"
+        >
+          <Link
+            to={`/recipes/${recipe._id}`}
+            className="block"
+          >
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2">{recipe.title}</h2>
+            <p className="text-gray-600 mb-4">Thời gian nấu: {recipe.cookingTime}</p>
+            {recipe.images && (
+              <img
+                src={recipe.images}
+                alt={recipe.title}
+                className="w-32 h-auto rounded-md"
+              />
+            )}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
     </>
   );
 }

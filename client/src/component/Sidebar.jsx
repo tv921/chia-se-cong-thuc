@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col bg-gray-200 text-stone-600 w-72 h-full p-4">
+    <div className="flex flex-col bg-gray-200 text-stone-600 w-72 h-screen p-4"style={{ position: "sticky", top: "0" }}>
       {/* Logo */}
       <div className="flex justify-center mb-4">
         <img

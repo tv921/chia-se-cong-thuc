@@ -46,7 +46,7 @@ function RecipeDetail() {
             <p className="text-gray-700">{step.description}</p>
             {step.imageUrl && (
               <div className="mt-2">
-                <img src={step.imageUrl} alt={`Step ${index + 1}`} className="w-full h-auto rounded-lg shadow-md" />
+                <img src={step.imageUrl} alt={`Step ${index + 1}`} className="w-64 h-48 rounded-lg shadow-md" />
               </div>
             )}
           </li>
