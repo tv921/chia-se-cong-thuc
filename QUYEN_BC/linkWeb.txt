@@ -1,0 +1,16 @@
+MongoDB:
+https://topdev.vn/blog/mongodb-la-gi/
+https://www.mongodb.com/resources/products/fundamentals/features
+ReactJS:
+https://topdev.vn/blog/react-la-gi-lo-trinh
+https://react.dev/learn
+Nodejs:
+https://topdev.vn/blog/node-js-la-gi
+Expressjs:
+https://fptshop.com.vn/tin-tuc/danh-gia/express-js-la-gi-174976
+Tailwind CSS:
+https://viblo.asia/p/gioi-thieu-tailwind-css-framework-css-de-tao-giao-dien-linh-hoat-va-nhanh-chong-pgjLNQqwJ32
+Javascript:
+https://aws.amazon.com/vi/what-is/javascript/
+RESTful API:
+https://topdev.vn/blog/restful-api-la-gi/

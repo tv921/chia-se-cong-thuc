@@ -6,7 +6,7 @@ import RecipeSlider from '../component/RecipeSlider';
 
 const recipe = [
   { image: '/images/recipe-1.jpg' },
-  { image: '/images/recipe-2.jpg' },
+  { image: '/images/recipe-3.jpg' },
   { image: '/images/recipe-4.jpg' },
 ];
 
