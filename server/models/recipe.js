@@ -15,8 +15,7 @@ const RecipeSchema = new mongoose.Schema({
     ],
     video: { type: String }, // URL video hướng dẫn (nếu có)
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // ID người đăng công thức
+    updatedAt: { type: Date, default: Date.now },   
     ratings: [
         {
             userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
