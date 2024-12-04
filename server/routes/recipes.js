@@ -78,5 +78,25 @@ router.post('/add-recipe', async (req, res) => {
   }
 });
 
+// API trả về đường dẫn chia sẻ công thức
+router.get('/recipes/:id/share', async (req, res) => {
+  try {
+    const recipeId = req.params.id;
+    const recipe = await Recipe.findById(recipeId);
+
+    if (!recipe) {
+      return res.status(404).json({ error: 'Không tìm thấy công thức' });
+    }
+
+    const shareLink = `http://localhost:3000/recipes/${recipeId}`;
+    res.status(200).json({ shareLink });
+  } catch (err) {
+    res.status(500).json({ error: 'Lỗi server', details: err.message });
+  }
+});
+
+module.exports = router;
+
+
 
 module.exports = router;
