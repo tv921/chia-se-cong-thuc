@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col bg-gray-200 text-stone-600 w-72 h-screen p-4"style={{ position: "sticky", top: "0" }}>
+    <div className="flex flex-col bg-gray-200 text-stone-600 w-84 h-screen p-4"style={{ position: "sticky", top: "0" }}>
       {/* Logo */}
       <div className="flex justify-center mb-4">
         <img
@@ -100,7 +100,7 @@ const Sidebar = () => {
                 d="M5 12h14M12 5v14m7-7a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
-            Công thức của tôi
+            Công thức yêu thích
           </li>
         </Link>
       </ul>

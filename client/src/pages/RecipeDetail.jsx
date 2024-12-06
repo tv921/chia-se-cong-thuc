@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ShareButton from '../component/ShareButton';
 
 function RecipeDetail() {
   const { id } = useParams();
@@ -52,10 +51,7 @@ function RecipeDetail() {
             )}
           </li>
         ))}
-      </ol>
-        <div>
-          <ShareButton recipeId={recipe._id} />
-        </div>
+      </ol> 
     </div>
   );
 }
