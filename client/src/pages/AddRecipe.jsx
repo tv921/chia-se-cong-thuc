@@ -4,12 +4,12 @@ import axios from 'axios';
 const AddRecipe = () => {
   const [formData, setFormData] = useState({
     title: '',
-    images: '',
+    images: null, // File ảnh
     ingredients: [''],
     cookingStyle: '',
     cookingTime: '',
-    servingSize: '',
-    steps: [{ description: '', imageUrl: '' }],
+    stepsDescriptions: [''], // Mảng mô tả các bước
+    stepsImages: [], // Mảng file ảnh các bước
     video: '',
   });
 
@@ -24,40 +24,67 @@ const AddRecipe = () => {
     setFormData({ ...formData, ingredients: updatedIngredients });
   };
 
-  const handleStepChange = (index, field, value) => {
-    const updatedSteps = [...formData.steps];
-    updatedSteps[index][field] = value;
-    setFormData({ ...formData, steps: updatedSteps });
+  const handleStepDescriptionChange = (index, value) => {
+    const updatedDescriptions = [...formData.stepsDescriptions];
+    updatedDescriptions[index] = value;
+    setFormData({ ...formData, stepsDescriptions: updatedDescriptions });
   };
 
-  const addIngredient = () => setFormData({ ...formData, ingredients: [...formData.ingredients, ''] });
-  const addStep = () => setFormData({ ...formData, steps: [...formData.steps, { description: '', imageUrl: '' }] });
+  const handleStepImageChange = (index, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const updatedStepsImages = [...formData.stepsImages];
+      updatedStepsImages[index] = file;
+      setFormData({ ...formData, stepsImages: updatedStepsImages });
+    }
+  };
+
+  const addIngredient = () =>
+    setFormData({ ...formData, ingredients: [...formData.ingredients, ''] });
+
+  const addStep = () => {
+    setFormData({
+      ...formData,
+      stepsDescriptions: [...formData.stepsDescriptions, ''],
+      stepsImages: [...formData.stepsImages, null],
+    });
+  };
+
+  const handleImageChange = (e) => {
+    setFormData({ ...formData, images: e.target.files[0] });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formDataToSend = new FormData();
+    formDataToSend.append('title', formData.title);
+    formDataToSend.append('images', formData.images); // File ảnh
+    formDataToSend.append('cookingStyle', formData.cookingStyle);
+    formDataToSend.append('cookingTime', formData.cookingTime);
+    formDataToSend.append('video', formData.video);
+
+    formData.ingredients.forEach((ingredient, index) => {
+      formDataToSend.append(`ingredients[${index}]`, ingredient);
+    });
+
+    formData.stepsDescriptions.forEach((description, index) => {
+      formDataToSend.append(`stepsDescriptions[${index}]`, description);
+    });
+
+    formData.stepsImages.forEach((image, index) => {
+      if (image) {
+        formDataToSend.append(`stepsImages[${index}]`, image);
+      }
+    });
+
     try {
-      // Gửi formData vào body của request
-      const response = await axios.post('http://localhost:5000/api/recipes/add-recipe', formData);
-
-      alert('Thêm công thức thành công!');
-      console.log('Response:', response.data);
-
-      // Reset form sau khi thành công
-      setFormData({
-        title: '',
-        images: '',
-        ingredients: [''],
-        cookingStyle: '',
-        cookingTime: '',
-        servingSize: '',
-        steps: [{ description: '', imageUrl: '' }],
-        video: '',
+      await axios.post('http://localhost:5000/api/recipes', formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
+      alert('Công thức đã được thêm!');
     } catch (error) {
-      // Log lỗi chi tiết
-      console.error('Lỗi khi thêm công thức:', error.response ? error.response.data : error.message);
-      alert(error.response ? error.response.data.message : 'Có lỗi xảy ra, vui lòng thử lại.');
+      console.error('Lỗi khi thêm công thức:', error);
     }
   };
 
@@ -77,17 +104,20 @@ const AddRecipe = () => {
             required
           />
         </div>
-        {/* Image */}
+
+        {/* Image upload */}
         <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">URL ảnh</label>
+          <label className="block text-gray-700 font-medium mb-2">Ảnh món ăn</label>
           <input
-            type="text"
+            type="file"
             name="images"
-            value={formData.images}
-            onChange={handleInputChange}
+            onChange={handleImageChange}
             className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+            accept="image/*"
+            required
           />
         </div>
+
         {/* Ingredients */}
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">Nguyên liệu</label>
@@ -109,6 +139,7 @@ const AddRecipe = () => {
             + Thêm nguyên liệu
           </button>
         </div>
+
         {/* Cooking Style */}
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">Phong cách nấu ăn</label>
@@ -120,6 +151,7 @@ const AddRecipe = () => {
             className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
           />
         </div>
+
         {/* Cooking Time */}
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">Thời gian nấu</label>
@@ -131,35 +163,24 @@ const AddRecipe = () => {
             className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
           />
         </div>
-        {/* Serving Size */}
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Phần ăn</label>
-          <input
-            type="number"
-            name="servingSize"
-            value={formData.servingSize}
-            onChange={handleInputChange}
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-          />
-        </div>
+
         {/* Steps */}
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">Các bước thực hiện</label>
-          {formData.steps.map((step, index) => (
+          {formData.stepsDescriptions.map((description, index) => (
             <div key={index} className="mb-2">
               <input
                 type="text"
                 placeholder="Mô tả bước"
-                value={step.description}
-                onChange={(e) => handleStepChange(index, 'description', e.target.value)}
+                value={description}
+                onChange={(e) => handleStepDescriptionChange(index, e.target.value)}
                 className="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               />
               <input
-                type="text"
-                placeholder="URL ảnh minh họa"
-                value={step.imageUrl}
-                onChange={(e) => handleStepChange(index, 'imageUrl', e.target.value)}
-                className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                type="file"
+                onChange={(e) => handleStepImageChange(index, e)}
+                className="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                accept="image/*"
               />
             </div>
           ))}
@@ -171,7 +192,8 @@ const AddRecipe = () => {
             + Thêm bước
           </button>
         </div>
-        {/* Video */}
+
+        {/* Video URL */}
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">URL video</label>
           <input
@@ -182,6 +204,7 @@ const AddRecipe = () => {
             className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
           />
         </div>
+
         {/* Submit */}
         <button
           type="submit"
