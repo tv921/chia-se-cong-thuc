@@ -3,22 +3,33 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 
+const recipeRoutes = require('./routes/recipeRoutes'); // Import routes từ file recipeRoutes.js
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
-app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(cors()); // Kích hoạt CORS để hỗ trợ giao tiếp giữa server và client
+app.use(express.json()); // Xử lý dữ liệu JSON trong request body
+app.use('/images', express.static(path.join(__dirname, '../client/public/images'))); // Đảm bảo file ảnh có thể được truy cập công khai
 
-// Kết nối MongoDB
-mongoose.connect('mongodb://localhost:27017/recipeDB', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
 
-// Routes
-const recipeRoutes = require('./routes/recipes');
-app.use('/api/recipes', recipeRoutes);
+mongoose.connect('mongodb://localhost:27017/recipeDB') 
+ .then(() => console.log('MongoDB connected successfully')) 
+ .catch(err => console.error('Failed to connect MongoDB:', err));
+
+// Đăng ký các routes
+app.use('/api/recipes', recipeRoutes); // Đăng ký các route liên quan đến recipes
+
+// Route kiểm tra server
+app.get('/', (req, res) => {
+  res.send('Recipe API is running!');
+});
+
+// Xử lý lỗi 404
+app.use((req, res, next) => {
+  res.status(404).json({ message: 'Route not found' });
+});
 
 // Khởi động server
 app.listen(PORT, () => {

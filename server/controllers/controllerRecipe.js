@@ -1,11 +1,8 @@
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
 const Recipe = require('../models/recipe');
-const router = express.Router();
+const path = require('path');
 
-// Route tìm kiếm món ăn theo tên và nguyên liệu
-router.get('/search', async (req, res) => {
+// Tìm kiếm món ăn theo tên và nguyên liệu
+const searchRecipes = async (req, res) => {
   const { query } = req.query;
   try {
     const recipes = await Recipe.find({
@@ -19,9 +16,10 @@ router.get('/search', async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-});
+};
 
-router.get('/:id', async (req, res) => {
+// Lấy thông tin công thức theo ID
+const getRecipeById = async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
     if (!recipe) {
@@ -31,17 +29,11 @@ router.get('/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Error fetching recipe details' });
   }
-});
+};
 
-
-// Cấu hình lưu file tạm thời vào thư mục 'client/public/images'
-const upload = multer({
-  dest: path.join(__dirname, '../../client/public/images/'), // Đảm bảo lưu vào thư mục 'client/public/images'
-});
-
-router.post('/', upload.any(), async (req, res) => {
+// Thêm công thức mới
+const createRecipe = async (req, res) => {
   try {
-    // Xử lý dữ liệu text
     const { title, cookingStyle, cookingTime, ingredients, stepsDescriptions, video } = req.body;
 
     // Xử lý các file upload (stepsImages và images)
@@ -70,7 +62,10 @@ router.post('/', upload.any(), async (req, res) => {
     console.error('Lỗi khi thêm công thức:', error);
     res.status(500).json({ message: 'Lỗi khi thêm công thức', error });
   }
-});
+};
 
-
-module.exports = router;
+module.exports = {
+  searchRecipes,
+  getRecipeById,
+  createRecipe,
+};
