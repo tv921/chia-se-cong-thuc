@@ -33,7 +33,7 @@ const Navbar = () => {
                             to="/logout" 
                             className="hover:text-gray-300 transition-colors duration-300"
                         >
-                            <button className="bg-white text-black border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">Đăng ký</button>
+                            <button className="bg-white text-black border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">Đăng xuất</button>
                         </Link>
                     </li>
                 </ul>

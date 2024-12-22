@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 
 const recipeRoutes = require('./routes/recipe.routes'); // Import routes từ file recipeRoutes.js
-const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,7 +23,7 @@ mongoose.connect('mongodb://localhost:27017/recipeDB')
 // Đăng ký các routes
 app.use('/api/recipes', recipeRoutes); 
 
-app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Route kiểm tra server
 app.get('/', (req, res) => {
