@@ -50,7 +50,7 @@ const Sidebar = () => {
             Trang chủ
           </li>
         </Link>
-        <Link to="/recipes">
+        <Link to="/manage-recipes">
           <li className="flex items-center px-4 py-2 text-2xl font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
             <svg
               xmlns="http://www.w3.org/2000/svg"

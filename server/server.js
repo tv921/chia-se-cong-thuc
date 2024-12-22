@@ -1,9 +1,11 @@
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 
-const recipeRoutes = require('./routes/recipeRoutes'); // Import routes từ file recipeRoutes.js
+const recipeRoutes = require('./routes/recipe.routes'); // Import routes từ file recipeRoutes.js
+const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,7 +21,9 @@ mongoose.connect('mongodb://localhost:27017/recipeDB')
  .catch(err => console.error('Failed to connect MongoDB:', err));
 
 // Đăng ký các routes
-app.use('/api/recipes', recipeRoutes); // Đăng ký các route liên quan đến recipes
+app.use('/api/recipes', recipeRoutes); 
+
+app.use('/api/auth', authRoutes);
 
 // Route kiểm tra server
 app.get('/', (req, res) => {
@@ -35,3 +39,4 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+

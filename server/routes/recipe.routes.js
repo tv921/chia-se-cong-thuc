@@ -1,7 +1,10 @@
+
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { searchRecipes, getRecipeById, createRecipe } = require('../controllers/controllerRecipe');
+const { searchRecipes, getRecipeById, createRecipe, updateRecipe, deleteRecipe} = require('../controllers/recipe.controller');
+const { getRecipes } = require('../controllers/recipe.controller');
+
 const router = express.Router();
 
 // Cấu hình lưu file tạm thời vào thư mục 'client/public/images'
@@ -18,4 +21,13 @@ router.get('/:id', getRecipeById);
 // Route thêm công thức mới
 router.post('/', upload.any(), createRecipe);
 
+// Route sửa công thức
+router.put('/:id', upload.any(), updateRecipe);
+
+// Route xóa công thức
+router.delete('/:id', deleteRecipe);
+
+router.get('/', getRecipes);
+
 module.exports = router;
+

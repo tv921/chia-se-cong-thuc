@@ -18,6 +18,16 @@ const searchRecipes = async (req, res) => {
   }
 };
 
+const getRecipes = async (req, res) => {
+  try {
+    const recipes = await Recipe.find(); // Lấy tất cả công thức
+    res.status(200).json(recipes); // Trả về JSON
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching recipes', error }); // Trả về lỗi
+  }
+};
+
+
 // Lấy thông tin công thức theo ID
 const getRecipeById = async (req, res) => {
   try {
@@ -64,8 +74,69 @@ const createRecipe = async (req, res) => {
   }
 };
 
+// Sửa công thức
+const updateRecipe = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, ingredients, cookingStyle, cookingTime, stepsDescriptions, video } = req.body;
+
+    const updatedData = {
+      title,
+      ingredients,
+      cookingStyle,
+      cookingTime,
+      stepsDescriptions,
+      video,
+    };
+
+    // Xử lý hình ảnh nếu có file mới
+    if (req.files) {
+      const stepsImages = req.files
+        .filter((file) => file.fieldname.startsWith('stepsImages'))
+        .map((file) => file.path.replace(path.join(__dirname, '../../client/public'), '').replace(/\\/g, '/'));
+      
+      const images = req.files.find((file) => file.fieldname === 'images')?.path.replace(path.join(__dirname, '../../client/public'), '').replace(/\\/g, '/') || '';
+
+      if (stepsImages.length) updatedData.stepsImages = stepsImages;
+      if (images) updatedData.images = images;
+    }
+
+    const updatedRecipe = await Recipe.findByIdAndUpdate(id, updatedData, { new: true });
+
+    if (!updatedRecipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+
+    res.status(200).json({ message: 'Recipe updated successfully', recipe: updatedRecipe });
+  } catch (error) {
+    console.error('Error updating recipe:', error);
+    res.status(500).json({ message: 'Error updating recipe', error });
+  }
+};
+
+// Xóa công thức
+const deleteRecipe = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedRecipe = await Recipe.findByIdAndDelete(id);
+
+    if (!deletedRecipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+
+    res.status(200).json({ message: 'Recipe deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting recipe:', error);
+    res.status(500).json({ message: 'Error deleting recipe', error });
+  }
+};
+
 module.exports = {
   searchRecipes,
   getRecipeById,
   createRecipe,
+  updateRecipe,
+  deleteRecipe,
+  getRecipes,
 };
