@@ -2,23 +2,24 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const Login = ({ onLogin }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      const response = await axios.post("http://localhost:5000/api/users/login", {
         email,
         password,
       });
-      localStorage.setItem('token', response.data.token); // Lưu token vào localStorage
-      navigate('/'); // Điều hướng về trang chủ sau khi đăng nhập thành công
+      localStorage.setItem("token", response.data.token); // Lưu token vào localStorage
+      onLogin(); // Cập nhật trạng thái đăng nhập
+      navigate("/"); // Điều hướng về trang chủ
     } catch (err) {
-      setError(err.response.data.message);
+      setError(err.response?.data?.message || "Đăng nhập thất bại");
     }
   };
 
@@ -28,7 +29,9 @@ const Login = () => {
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block">Email</label>
+          <label htmlFor="email" className="block">
+            Email
+          </label>
           <input
             type="email"
             id="email"
@@ -39,7 +42,9 @@ const Login = () => {
           />
         </div>
         <div>
-          <label htmlFor="password" className="block">Password</label>
+          <label htmlFor="password" className="block">
+            Password
+          </label>
           <input
             type="password"
             id="password"
@@ -49,7 +54,9 @@ const Login = () => {
             required
           />
         </div>
-        <button type="submit" className="w-full py-2 bg-blue-500 text-white rounded">Đăng nhập</button>
+        <button type="submit" className="w-full py-2 bg-blue-500 text-white rounded">
+          Đăng nhập
+        </button>
       </form>
     </div>
   );

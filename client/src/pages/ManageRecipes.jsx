@@ -48,13 +48,13 @@ const ManageRecipes = () => {
             <div className="flex justify-between">
               <Link
                 to={`/edit-recipe/${recipe._id}`}
-                className="text-blue-500 hover:underline"
+                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:bg-blue-600 hover:shadow-lg transition duration-300"
               >
                 Chỉnh sửa
               </Link>
               <button
                 onClick={() => handleDelete(recipe._id)}
-                className="text-red-500 hover:underline"
+                className="bg-red-500 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:bg-red-600 hover:shadow-lg transition duration-300"
               >
                 Xóa
               </button>
