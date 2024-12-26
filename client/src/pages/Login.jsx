@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -60,9 +60,16 @@ const Login = ({ onLogin }) => {
           Đăng nhập
         </button>
       </form>
+      <p className="text-center mt-4 text-black">
+        Chưa có tài khoản?{' '}
+        <Link to="/register" className="text-violet-700 font-bold hover:underline">
+          Đăng ký ngay
+        </Link>
+      </p>
     </div>
   );
 };
 
 export default Login;
+
 

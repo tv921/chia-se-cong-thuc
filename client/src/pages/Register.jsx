@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -91,8 +91,15 @@ const Register = () => {
           Đăng ký
         </button>
       </form>
+      <p className="text-center mt-4 text-black">
+        Đã có tài khoản?{' '}
+        <Link to="/login" className="text-violet-700 font-bold hover:underline">
+          Đăng nhập ngay
+        </Link>
+      </p>
     </div>
   );
 };
 
 export default Register;
+
