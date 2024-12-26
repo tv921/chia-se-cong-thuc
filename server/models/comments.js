@@ -1,12 +1,15 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
 const commentSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: "User",  // Tham chiếu đến User
     required: true,
   },
   recipeId: {
     type: Schema.Types.ObjectId,
-    ref: "Recipe",
+    ref: "Recipe", // Tham chiếu đến Recipe
     required: true,
   },
   content: {
@@ -20,3 +23,4 @@ const commentSchema = new Schema({
 });
 
 module.exports = mongoose.model('Comment', commentSchema);
+

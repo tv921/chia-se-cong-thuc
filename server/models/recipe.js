@@ -13,13 +13,14 @@ const RecipeSchema = new Schema({
   video: { type: String, default: '' }, // URL video hướng dẫn (nếu có)
   createdAt: { type: Date, default: Date.now }, // Ngày đăng công thức
   updatedAt: { type: Date, default: Date.now }, // Ngày chỉnh sửa công thức
-  ratings: [
-    {
-      userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // ID người dùng đánh giá
-      rating: { type: Number, min: 1, max: 5, required: true }, // Điểm đánh giá (từ 1 đến 5)
-    }
-  ],
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }], // Liên kết tới ID bình luận
+  ratings: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Rating', // Liên kết đến collection "ratings"
+  }],
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comment', // Liên kết đến collection "comments"
+  }],
 });
 
 const Recipe = mongoose.model('Recipe', RecipeSchema);

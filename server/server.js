@@ -6,6 +6,8 @@ const path = require('path');
 
 const recipeRoutes = require('./routes/recipe.routes'); // Import routes từ file recipeRoutes.js
 const userRoutes = require('./routes/user.routes');
+const commentRoutes = require('./routes/comment.routes');
+const ratingRoutes = require('./routes/rating.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,6 +26,10 @@ mongoose.connect('mongodb://localhost:27017/recipeDB')
 app.use('/api/recipes', recipeRoutes); 
 
 app.use('/api/users', userRoutes);
+
+app.use('/api/comments', commentRoutes);
+
+app.use('/api/ratings', ratingRoutes);
 
 // Route kiểm tra server
 app.get('/', (req, res) => {

@@ -7,44 +7,43 @@ const Navbar1 = ({ onLogout }) => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token'); // Lấy token từ localStorage
-
+    const token = localStorage.getItem('token');
     if (token) {
-      // Gửi yêu cầu để lấy thông tin người dùng từ API
-      axios.get('http://localhost:5000/api/users/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-        .then(response => {
-          // Lưu tên người dùng vào state
-          setUserName(response.data.username);
-          setIsUserLoggedIn(true); // Cập nhật trạng thái đăng nhập
+      axios
+        .get('http://localhost:5000/api/users/me', {
+          headers: { Authorization: `Bearer ${token}` },
         })
-        .catch(error => {
+        .then((response) => {
+          setUserName(response.data.username);
+          setIsUserLoggedIn(true);
+        })
+        .catch((error) => {
           console.error('Error fetching user info:', error);
         });
     }
   }, []);
 
   return (
-    <nav className="bg-sky-900 text-white">
+    <nav className="bg-gradient-to-r from-blue-600 to-blue-900 text-white shadow-lg">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
-        {/* Logo or Brand */}
-        <div className="text-3xl font-bold">
-          <Link to="/">Công thức nấu ăn</Link>
+        {/* Logo */}
+        <div className="text-3xl font-extrabold">
+          <Link to="/" className="hover:opacity-80 transition-opacity duration-300">
+            Chia sẻ công thức nấu ăn
+          </Link>
         </div>
 
         {/* Menu */}
-        <ul className="flex space-x-6 items-center">
-          {/* Hiển thị tên người dùng nếu đã đăng nhập */}
+        <ul className="flex items-center space-x-6">
           {isUserLoggedIn ? (
-            <li className="text-lg">Xin chào, {userName}</li>
+            <li className="text-lg font-medium">Xin chào, <span className="font-bold">{userName}</span></li>
           ) : (
-            <li className="text-lg">Chưa đăng nhập</li>
+            <li className="text-lg italic">Chưa đăng nhập</li>
           )}
           <li>
             <button
               onClick={onLogout}
-              className="bg-white text-black border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100"
+              className="bg-red-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-700 transition-all duration-300"
             >
               Đăng xuất
             </button>

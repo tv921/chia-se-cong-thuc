@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 const userSchema = new Schema({
   username: {
@@ -28,12 +28,6 @@ const userSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: "Recipe",
-    },
-  ],
-  comments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Comment",
     },
   ],
 });

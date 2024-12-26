@@ -13,6 +13,8 @@ import Sidebar from "./component/Sidebar";
 import EditRecipe from "./pages/EditRecipe";
 import ManageRecipes from "./pages/ManageRecipes";
 import PrivateRoute from "./component/PrivateRoute";
+import SearchResults from './pages/SearchResults';
+import Footer from "./component/Footer";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,6 +57,7 @@ function App() {
               <Route path="/logout" element={<Logout onLogout={handleLogout} />} />
               <Route path="/" element={<Home />} />
               <Route path="/recipes/:id" element={<RecipeDetail />} />
+              <Route path="/search-results" element={<SearchResults />} />
 
               {/* User Routes */}
               <Route

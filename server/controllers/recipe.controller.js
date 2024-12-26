@@ -31,7 +31,9 @@ const getRecipes = async (req, res) => {
 // Lấy thông tin công thức theo ID
 const getRecipeById = async (req, res) => {
   try {
-    const recipe = await Recipe.findById(req.params.id);
+    const recipe = await Recipe.findById(req.params.id)
+    .populate('ratings')  // Giả sử bạn lưu thông tin đánh giá trong một bảng khác
+    .populate('comments');  // Tương tự với bình luận
     if (!recipe) {
       return res.status(404).json({ message: 'Recipe not found' });
     }

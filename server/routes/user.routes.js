@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, logoutUser, getUserInfo, authenticateToken } = require('../controllers/user.controller');
-
+const { registerUser, loginUser, logoutUser, getUserInfo } = require('../controllers/user.controller');
+const authenticateUser = require('../middlewares/authenticateUser');
 
 // Đăng ký người dùng
 router.post('/register', registerUser);
@@ -13,7 +13,7 @@ router.post('/login', loginUser);
 router.get('/logout', logoutUser);
 
 // Lấy thông tin người dùng
-router.get('/me', authenticateToken, getUserInfo);
+router.get('/me', authenticateUser, getUserInfo);
 
 module.exports = router;
 
