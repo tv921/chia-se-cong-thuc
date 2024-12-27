@@ -12,7 +12,7 @@ const PrivateRoute = ({ children, roles }) => {
 
   const userRole = getRoleFromToken();
   if (!roles.includes(userRole)) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/warning" replace />;
   }
 
   return children;

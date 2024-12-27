@@ -1,7 +1,7 @@
 const Comment = require('../models/comments');
 const Recipe = require('../models/recipe');
 
-exports.addComment = async (req, res) => {
+const addComment = async (req, res) => {
   try {
     const { recipeId } = req.params;
     const { content } = req.body;
@@ -20,7 +20,7 @@ exports.addComment = async (req, res) => {
   }
 };
 
-exports.getComments = async (req, res) => {
+const getComments = async (req, res) => {
   try {
     const { recipeId } = req.params;
     const comments = await Comment.find({ recipeId })
@@ -32,6 +32,41 @@ exports.getComments = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+const getAllComments = async (req, res) => {
+  try {
+    const comments = await Comment.find()
+      .populate("userId", "username email")
+      .populate("recipeId", "title");
+    res.status(200).json(comments);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};
+
+const deleteComment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedComment = await Comment.findByIdAndDelete(id);
+
+    if (!deletedComment) {
+      return res.status(404).json({ message: "Bình luận không tồn tại" });
+    }
+
+    res.status(200).json({ message: "Xóa bình luận thành công" });
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};
+
+module.exports = {
+  addComment,
+  getComments,
+  getAllComments,
+  deleteComment,
 };
 
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CommentForm from '../component/CommentForm';
 import RatingForm from '../component/RatingForm';
+import PrivateRoute from "../component/PrivateRoute";
 
 function RecipeDetail() {
   const { id } = useParams();
@@ -166,10 +167,12 @@ recipe.ratings && recipe.ratings.length > 0
 
 
       {/* Forms */}
-      <div>
-        <CommentForm recipeId={id} onCommentAdded={handleCommentAdded} />
-        <RatingForm recipeId={id} onRatingAdded={handleRatingAdded} />
-      </div>
+      <PrivateRoute roles={["admin"]}>
+        <div>
+          <CommentForm recipeId={id} onCommentAdded={handleCommentAdded} />
+          <RatingForm recipeId={id} onRatingAdded={handleRatingAdded} />
+        </div>
+      </PrivateRoute>
     </div>
   );
 }

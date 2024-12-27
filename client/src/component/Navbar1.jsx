@@ -41,6 +41,14 @@ const Navbar1 = ({ onLogout }) => {
             <li className="text-lg italic">Chưa đăng nhập</li>
           )}
           <li>
+            <Link to="/update-user">
+            <button
+              className="bg-orange-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-orange-700 transition-all duration-300 mr-4"
+            >
+              Thông tin người dùng 
+            </button>
+            </Link>
+
             <button
               onClick={onLogout}
               className="bg-red-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-700 transition-all duration-300"

@@ -1,22 +1,8 @@
 const User = require('../models/users');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { get } = require('mongoose');
 
-// Middleware để xác thực token JWT
-const authenticateToken = (req, res, next) => {
-  const token = req.header('Authorization')?.split(' ')[1]; // Lấy token từ header Authorization
-  if (!token) {
-    return res.status(401).json({ message: 'Token không tồn tại' });
-  }
-
-  jwt.verify(token, 'secretkey', (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: 'Token không hợp lệ' });
-    }
-    req.user = user;
-    next();
-  });
-};
 
 // API để lấy thông tin người dùng (sử dụng token để xác thực)
 const getUserInfo = async (req, res) => {
@@ -95,10 +81,65 @@ const loginUser = async (req, res) => {
   }
 };
 
-// Đăng xuất người dùng
-const logoutUser = (req, res) => {
-  res.status(200).json({ message: 'Đăng xuất thành công' });
-};
+  // Đăng xuất người dùng
+  const logoutUser = (req, res) => {
+    res.status(200).json({ message: 'Đăng xuất thành công' });
+  };
 
-module.exports = { registerUser, loginUser, logoutUser, getUserInfo, authenticateToken};
+
+  const updateUserInfo = async (req, res) => {
+    try {
+      const { username, email } = req.body; // Các thông tin muốn cập nhật
+      const userId = req.user.id; // ID người dùng từ token
+  
+      // Tìm và cập nhật thông tin người dùng
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { username, email }, // Chỉ cho phép cập nhật username và email
+        { new: true, runValidators: true } // Trả về bản ghi đã cập nhật và áp dụng validate
+      ).select("username email");
+  
+      if (!updatedUser) {
+        return res.status(404).json({ message: "Người dùng không tồn tại" });
+      }
+  
+      res.status(200).json({
+        message: "Cập nhật thông tin thành công",
+        user: updatedUser,
+      });
+    } catch (error) {
+      console.error("Error while updating user info:", error);
+      res.status(500).json({ message: "Lỗi hệ thống" });
+    }
+  };
+
+  const getAllUsers = async (req, res) => {
+    try {
+      const users = await User.find().select("username email role createdAt");
+      res.status(200).json(users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      res.status(500).json({ message: "Lỗi hệ thống" });
+    }
+  };
+  
+  const deleteUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deletedUser = await User.findByIdAndDelete(id);
+  
+      if (!deletedUser) {
+        return res.status(404).json({ message: "Người dùng không tồn tại" });
+      }
+  
+      res.status(200).json({ message: "Xóa người dùng thành công" });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).json({ message: "Lỗi hệ thống" });
+    }
+  };
+
+  
+
+module.exports = { registerUser, loginUser, logoutUser, getUserInfo, updateUserInfo, getAllUsers, deleteUser};
 

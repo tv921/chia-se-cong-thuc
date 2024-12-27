@@ -28,7 +28,7 @@ function CommentForm({ recipeId, onCommentAdded }) {
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Write a comment..."
+        placeholder="Nhập bình luận..."
         required
         className="w-full p-2 border rounded"
       />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 import Navbar1 from "./component/Navbar1";
 import Navbar from "./component/Navbar";
@@ -10,43 +11,74 @@ import Register from "./pages/Register";
 import Logout from "./pages/Logout";
 import RecipeDetail from "./pages/RecipeDetail";
 import Sidebar from "./component/Sidebar";
+import Sidebar1 from "./component/Sidebar1";
 import EditRecipe from "./pages/EditRecipe";
 import ManageRecipes from "./pages/ManageRecipes";
 import PrivateRoute from "./component/PrivateRoute";
 import SearchResults from './pages/SearchResults';
-import Footer from "./component/Footer";
+import UpdateUser from "./pages/UpdateUser";
+import ManageUsers from "./pages/ManageUsers";
+import ManageComments from "./pages/ManageComments";
+import Warning from "./component/warning";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
-  // Kiểm tra trạng thái đăng nhập từ localStorage
+  // Kiểm tra trạng thái đăng nhập từ localStorage và cập nhật userRole
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
+    if (token) {
+      setIsLoggedIn(true);
+      try {
+        const decoded = jwtDecode(token); // Giải mã token
+        console.log("Decoded token:", decoded); // In ra token đã giải mã để kiểm tra
+        setUserRole(decoded.role); // Lấy vai trò từ token
+        console.log("User Role:", decoded.role); // In ra vai trò
+      } catch (error) {
+        console.error("Invalid token", error);
+        setIsLoggedIn(false);
+      }
+    }
+  }, []); // Chạy khi component mount hoặc khi token thay đổi.
 
   const handleLogin = () => {
     setIsLoggedIn(true);
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUserRole(decoded.role); // Cập nhật ngay vai trò
+      } catch (error) {
+        console.error("Invalid token during login", error);
+      }
+    }
   };
+  
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
+    setUserRole(null); // Reset userRole khi đăng xuất
   };
 
   return (
     <Router>
       <div className="flex min-h-screen">
         {/* Sidebar */}
-        <Sidebar />
+        {userRole === "admin" ? (
+          <Sidebar key="admin-sidebar" />
+        ) : (
+          <Sidebar1 key="user-sidebar" />
+        )}
 
-        <div className="flex-1 flex flex-col">
-          {/* Navbar */}
-          {isLoggedIn ? (
-            <Navbar1 onLogout={handleLogout} />
-          ) : (
-            <Navbar />
-          )}
+      <div className="flex-1 flex flex-col">
+        {/* Navbar */}
+        {isLoggedIn ? (
+          <Navbar1 onLogout={handleLogout} />
+        ) : (
+          <Navbar />
+        )}
 
           {/* Content Area */}
           <div className="flex-1 p-6 bg-gray-100">
@@ -58,6 +90,16 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/recipes/:id" element={<RecipeDetail />} />
               <Route path="/search-results" element={<SearchResults />} />
+              <Route path="/warning" element={<Warning />} />
+
+              <Route
+                path="/update-user"
+                element={
+                  <PrivateRoute roles={["user", "admin"]}>
+                    <UpdateUser />
+                  </PrivateRoute>
+                }
+              />
 
               {/* User Routes */}
               <Route
@@ -86,6 +128,24 @@ function App() {
                   </PrivateRoute>
                 }
               />
+
+              <Route
+                path="/manage-users"
+                element={
+                  <PrivateRoute roles={["admin"]}>
+                    <ManageUsers />
+                  </PrivateRoute>
+                }
+              />
+
+              <Route
+                path="/manage-comments"
+                element={
+                  <PrivateRoute roles={["admin"]}>
+                    <ManageComments />
+                  </PrivateRoute>
+                }
+              />
             </Routes>
           </div>
         </div>
@@ -95,5 +155,6 @@ function App() {
 }
 
 export default App;
+
 
 
