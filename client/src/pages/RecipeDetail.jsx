@@ -14,7 +14,7 @@ function RecipeDetail() {
         const response = await fetch(`http://localhost:5000/api/recipes/${id}`);
         if (!response.ok) throw new Error('Error fetching recipe details');
         const data = await response.json();
-        console.log(data.comments); // In ra để kiểm tra dữ liệu bình luận
+        console.log(data); // In ra để kiểm tra dữ liệu bình luận
         setRecipe(data);
       } catch (error) {
         console.error('Error:', error);
@@ -129,50 +129,62 @@ recipe.ratings && recipe.ratings.length > 0
         </div>
       )}
 
-    {/* Ratings */}
-    <h3 className="text-2xl font-bold text-gray-800 mb-4">Đánh giá:</h3>
-    <p className="mb-4 text-lg font-semibold text-gray-700">
-      Điểm trung bình: <span className="text-yellow-500">{averageRating} ⭐</span>
-    </p>
-    {recipe.ratings && recipe.ratings.length > 0 ? (
-      <ul className="list-disc list-inside text-gray-700 mb-6 text-xl">
-        {recipe.ratings.map((rating, index) => (
-          <li key={index}>
-            User {rating.userId.username} {rating.rating} ⭐
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p className="text-gray-600">Chưa có đánh giá nào.</p>
-    )}
-
-{/* Comments */}
-<h3 className="text-2xl font-bold text-gray-800 mb-4">Bình luận:</h3>
-{recipe.comments && recipe.comments.length > 0 ? (
-  <ul className="list-disc list-inside text-gray-700 mb-6 text-xl">
-    {recipe.comments.map((comment, index) => (
-      <li key={index}>
-        <p>
-          <strong>{comment.userId?.username}</strong>{comment.content}
+      {/* Ratings */}
+      <div className="mb-8 p-6 bg-gray-50 rounded-lg shadow-md">
+        <h3 className="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Đánh giá:</h3>
+        <p className="mb-4 text-lg font-semibold text-gray-700">
+          Điểm trung bình: <span className="text-yellow-500">{averageRating} ⭐</span>
         </p>
-        <p className="text-gray-500 text-sm">
-          Vào lúc: {comment.createdAt ? new Date(comment.createdAt).toLocaleString() : 'Ngày không hợp lệ'}
-        </p>
-      </li>
-    ))}
-  </ul>
-) : (
-  <p className="text-gray-600">Chưa có bình luận nào.</p>
-)}
+        
+        {recipe.ratings && recipe.ratings.length > 0 ? (
+          <ul className="list-disc list-inside text-gray-700 mb-6 text-xl space-y-2">
+            {recipe.ratings.map((rating, index) => (
+              <li key={index} className="flex items-center space-x-2">
+                <strong className="text-gray-800">{rating.userId?.username}</strong>
+                <span className="text-yellow-500">{rating.rating} ⭐</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-600">Chưa có đánh giá nào.</p>
+        )}
+
+        {/* Form for adding rating */}
+        <PrivateRoute roles={["admin", "user"]}>
+          <div>
+            <RatingForm recipeId={id} onRatingAdded={handleRatingAdded} />
+          </div>
+        </PrivateRoute>
+      </div>
 
 
-      {/* Forms */}
-      <PrivateRoute roles={["admin"]}>
-        <div>
-          <CommentForm recipeId={id} onCommentAdded={handleCommentAdded} />
-          <RatingForm recipeId={id} onRatingAdded={handleRatingAdded} />
-        </div>
+    {/* Comments */}
+    <div className="p-6 bg-white rounded-lg shadow-md">
+      <h3 className="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Bình luận:</h3>
+      {recipe.comments && recipe.comments.length > 0 ? (
+        <ul className="list-disc list-inside text-gray-700 mb-6 text-xl space-y-4">
+          {recipe.comments.map((comment, index) => (
+            <li key={index} className="p-4 bg-gray-100 rounded-lg shadow-sm">
+              <p className="font-semibold text-gray-800">
+                <strong>{comment.userId?.username}</strong> - {comment.content}
+              </p>
+              <p className="text-gray-500 text-sm">
+                Vào lúc: {comment.createdAt ? new Date(comment.createdAt).toLocaleString() : 'Ngày không hợp lệ'}
+              </p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-gray-600">Chưa có bình luận nào.</p>
+      )}
+
+      {/* Form for adding comment */}
+      <PrivateRoute roles={["admin", "user"]}>
+      <div>
+        <CommentForm recipeId={id} onCommentAdded={handleCommentAdded} />
+      </div>
       </PrivateRoute>
+      </div>
     </div>
   );
 }

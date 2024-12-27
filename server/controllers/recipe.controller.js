@@ -28,20 +28,37 @@ const getRecipes = async (req, res) => {
 };
 
 
-// Lấy thông tin công thức theo ID
 const getRecipeById = async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id)
-    .populate('ratings')  // Giả sử bạn lưu thông tin đánh giá trong một bảng khác
-    .populate('comments');  // Tương tự với bình luận
+      .populate({
+        path: 'ratings',
+        populate: {
+          path: 'userId', // Nạp thông tin người dùng trong đánh giá
+          select: 'username email', // Chỉ lấy trường username và email
+        },
+      })
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'userId', // Nạp thông tin người dùng trong bình luận
+          select: 'username email', // Chỉ lấy trường username và email
+        },
+      });
+
     if (!recipe) {
       return res.status(404).json({ message: 'Recipe not found' });
     }
-    res.status(200).json(recipe);
+
+    res.status(200).json(recipe); // Trả về thông tin đầy đủ của recipe
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Error fetching recipe details' });
   }
 };
+
+
+
 
 // Thêm công thức mới
 const createRecipe = async (req, res) => {
