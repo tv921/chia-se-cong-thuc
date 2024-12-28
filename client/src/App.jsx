@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import axios from "axios";
+
 
 import Navbar1 from "./component/Navbar1";
 import Navbar from "./component/Navbar";
@@ -20,6 +22,7 @@ import UpdateUser from "./pages/UpdateUser";
 import ManageUsers from "./pages/ManageUsers";
 import ManageComments from "./pages/ManageComments";
 import Warning from "./component/warning";
+import Statistics from "./pages/Statistics";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,6 +43,9 @@ function App() {
         setIsLoggedIn(false);
       }
     }
+
+    // Ghi nhận lượt truy cập
+  axios.post("http://localhost:5000/api/visits/record").catch((err) => console.error("Failed to record visit:", err));
   }, []); // Chạy khi component mount hoặc khi token thay đổi.
 
   const handleLogin = () => {
@@ -146,6 +152,16 @@ function App() {
                   </PrivateRoute>
                 }
               />
+
+              <Route
+                path="/statistics"
+                element={
+                  <PrivateRoute roles={["admin"]}>
+                    <Statistics />
+                  </PrivateRoute>
+                }
+              />
+
             </Routes>
           </div>
         </div>
