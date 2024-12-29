@@ -1,6 +1,6 @@
 
 import React from 'react';
-import '../css/index.css';
+
 
 const SearchBar = ({ query, setQuery, searchRecipes }) => {
     const handleSubmit = (e) => {

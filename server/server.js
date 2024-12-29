@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+require('dotenv').config();
 
 const recipeRoutes = require('./routes/recipe.routes'); // Import routes từ file recipeRoutes.js
 const userRoutes = require('./routes/user.routes');
@@ -19,9 +20,9 @@ app.use(express.json()); // Xử lý dữ liệu JSON trong request body
 app.use('/images', express.static(path.join(__dirname, '../client/public/images'))); // Đảm bảo file ảnh có thể được truy cập công khai
 
 
-mongoose.connect('mongodb://localhost:27017/recipeDB') 
- .then(() => console.log('MongoDB connected successfully')) 
- .catch(err => console.error('Failed to connect MongoDB:', err));
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.error('Failed to connect MongoDB:', err));
 
 // Đăng ký các routes
 app.use('/api/recipes', recipeRoutes); 

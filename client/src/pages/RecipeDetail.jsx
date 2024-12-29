@@ -135,12 +135,19 @@ recipe.ratings && recipe.ratings.length > 0
         <p className="mb-4 text-lg font-semibold text-gray-700">
           Điểm trung bình: <span className="text-yellow-500">{averageRating} ⭐</span>
         </p>
-        
+
         {recipe.ratings && recipe.ratings.length > 0 ? (
           <ul className="list-disc list-inside text-gray-700 mb-6 text-xl space-y-2">
             {recipe.ratings.map((rating, index) => (
-              <li key={index} className="flex items-center space-x-2">
-                <strong className="text-gray-800">{rating.userId?.username}</strong>
+              <li key={index} className="flex items-center space-x-3">
+                {/* Icon người dùng */}
+                <span className="text-blue-500">
+                  <i className="fas fa-user-circle text-2xl"></i>
+                </span>
+                {/* Tên người dùng và đánh giá */}
+                <strong className="text-gray-800">
+                   {rating.userId?.username}
+                </strong>
                 <span className="text-yellow-500">{rating.rating} ⭐</span>
               </li>
             ))}
@@ -158,33 +165,43 @@ recipe.ratings && recipe.ratings.length > 0
       </div>
 
 
-    {/* Comments */}
-    <div className="p-6 bg-white rounded-lg shadow-md">
+      {/* Comments */}
+      <div className="p-6 bg-white rounded-lg shadow-md">
       <h3 className="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Bình luận:</h3>
       {recipe.comments && recipe.comments.length > 0 ? (
-        <ul className="list-disc list-inside text-gray-700 mb-6 text-xl space-y-4">
+        <div className="space-y-4">
           {recipe.comments.map((comment, index) => (
-            <li key={index} className="p-4 bg-gray-100 rounded-lg shadow-sm">
-              <p className="font-semibold text-gray-800">
-                <strong>{comment.userId?.username}</strong> - {comment.content}
-              </p>
+            <div key={index} className="p-4 bg-gray-100 rounded-lg shadow-sm">
+              <div className="flex items-center space-x-3 mb-2">
+                {/* Icon người dùng */}
+                <span className="text-blue-500">
+                  <i className="fas fa-user-circle text-2xl"></i>
+                </span>
+                {/* Tên người dùng */}
+                <p className="font-semibold text-gray-800">
+                  <strong>{comment.userId?.username}</strong>
+                </p>
+              </div>
+              {/* Nội dung bình luận */}
+              <p className="text-gray-700">{comment.content}</p>
+              {/* Thời gian bình luận */}
               <p className="text-gray-500 text-sm">
                 Vào lúc: {comment.createdAt ? new Date(comment.createdAt).toLocaleString() : 'Ngày không hợp lệ'}
               </p>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
         <p className="text-gray-600">Chưa có bình luận nào.</p>
       )}
+    </div>
 
       {/* Form for adding comment */}
       <PrivateRoute roles={["admin", "user"]}>
-      <div>
-        <CommentForm recipeId={id} onCommentAdded={handleCommentAdded} />
-      </div>
+        <div>
+          <CommentForm recipeId={id} onCommentAdded={handleCommentAdded} />
+        </div>
       </PrivateRoute>
-      </div>
     </div>
   );
 }

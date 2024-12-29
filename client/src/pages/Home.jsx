@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from '../component/SearchBar';
-import '../css/index.css';
 import RecipeSlider from '../component/RecipeSlider';
 import { useNavigate } from 'react-router-dom';
 import Footer from "../component/Footer";

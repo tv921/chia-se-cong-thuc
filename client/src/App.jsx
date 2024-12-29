@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
+import './css/index.css';
 
 
 import Navbar1 from "./component/Navbar1";

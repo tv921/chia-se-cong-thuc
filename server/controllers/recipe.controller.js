@@ -68,9 +68,9 @@ const createRecipe = async (req, res) => {
     // Xử lý các file upload (stepsImages và images)
     const stepsImages = req.files
       .filter((file) => file.fieldname.startsWith('stepsImages'))
-      .map((file) => file.path.replace(path.join(__dirname, '../../client/public'), '').replace(/\\/g, '/')); // Loại bỏ phần 'client/public' khỏi đường dẫn
+      .map((file) => file.path.replace(path.join(__dirname, '../../client/public'), '').replace(/\\/g, '/'));
 
-    const images = req.files.find((file) => file.fieldname === 'images')?.path.replace(path.join(__dirname, '../../client/public'), '').replace(/\\/g, '/') || ''; // Loại bỏ 'client/public' khỏi đường dẫn
+    const images = req.files.find((file) => file.fieldname === 'images')?.path.replace(path.join(__dirname, '../../client/public'), '').replace(/\\/g, '/') || '';
 
     // Tạo công thức mới
     const newRecipe = new Recipe({
