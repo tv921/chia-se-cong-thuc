@@ -58,24 +58,22 @@ const getRecipeById = async (req, res) => {
 };
 
 
-
-
 // Thêm công thức mới
 const createRecipe = async (req, res) => {
   try {
     const { title, cookingStyle, cookingTime, ingredients, stepsDescriptions, video } = req.body;
 
-    // Xử lý các file upload (stepsImages và images)
+    
     const stepsImages = req.files
       .filter((file) => file.fieldname.startsWith('stepsImages'))
-      .map((file) => file.path.replace(path.join(__dirname, '../../client/public'), '').replace(/\\/g, '/'));
+      .map((file) => file.path.replace(path.join(__dirname, '../uploads'), '').replace(/\\/g, '/'));
 
-    const images = req.files.find((file) => file.fieldname === 'images')?.path.replace(path.join(__dirname, '../../client/public'), '').replace(/\\/g, '/') || '';
+    const images = req.files.find((file) => file.fieldname === 'images')?.path.replace(path.join(__dirname, '../uploads'), '').replace(/\\/g, '/') || '';
 
-    // Tạo công thức mới
+ 
     const newRecipe = new Recipe({
       title,
-      images, // Lưu đường dẫn tương đối
+      images, 
       ingredients: Array.isArray(ingredients) ? ingredients : [ingredients],
       cookingStyle,
       cookingTime,
@@ -84,7 +82,7 @@ const createRecipe = async (req, res) => {
       video,
     });
 
-    // Lưu công thức mới vào cơ sở dữ liệu
+   
     await newRecipe.save();
     res.status(201).json({ message: 'Công thức đã được thêm!', recipe: newRecipe });
   } catch (error) {
@@ -112,9 +110,9 @@ const updateRecipe = async (req, res) => {
     if (req.files) {
       const stepsImages = req.files
         .filter((file) => file.fieldname.startsWith('stepsImages'))
-        .map((file) => file.path.replace(path.join(__dirname, '../../client/public'), '').replace(/\\/g, '/'));
+        .map((file) => file.path.replace(path.join(__dirname, '../uploads'), '').replace(/\\/g, '/'));
       
-      const images = req.files.find((file) => file.fieldname === 'images')?.path.replace(path.join(__dirname, '../../client/public'), '').replace(/\\/g, '/') || '';
+      const images = req.files.find((file) => file.fieldname === 'images')?.path.replace(path.join(__dirname, '../uploads'), '').replace(/\\/g, '/') || '';
 
       if (stepsImages.length) updatedData.stepsImages = stepsImages;
       if (images) updatedData.images = images;
@@ -132,6 +130,7 @@ const updateRecipe = async (req, res) => {
     res.status(500).json({ message: 'Error updating recipe', error });
   }
 };
+
 
 // Xóa công thức
 const deleteRecipe = async (req, res) => {

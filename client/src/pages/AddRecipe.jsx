@@ -4,12 +4,12 @@ import axios from 'axios';
 const AddRecipe = () => {
   const [formData, setFormData] = useState({
     title: '',
-    images: null, // File ảnh
+    images: null,
     ingredients: [''],
     cookingStyle: '',
     cookingTime: '',
-    stepsDescriptions: [''], // Mảng mô tả các bước
-    stepsImages: [], // Mảng file ảnh các bước
+    stepsDescriptions: [''], 
+    stepsImages: [], 
     video: '',
   });
 
@@ -59,7 +59,7 @@ const AddRecipe = () => {
 
     const formDataToSend = new FormData();
     formDataToSend.append('title', formData.title);
-    formDataToSend.append('images', formData.images); // File ảnh
+    formDataToSend.append('images', formData.images); 
     formDataToSend.append('cookingStyle', formData.cookingStyle);
     formDataToSend.append('cookingTime', formData.cookingTime);
     formDataToSend.append('video', formData.video);

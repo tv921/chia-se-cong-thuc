@@ -70,7 +70,7 @@ recipe.ratings && recipe.ratings.length > 0
       {recipe.images && (
         <div className="mb-6 flex justify-center">
           <img
-            src={recipe.images}
+            src={`http://localhost:5000/uploads/${recipe.images}`}
             alt={recipe.title}
             className="w-8/12 h-auto rounded-lg shadow-md"
           />
@@ -102,7 +102,7 @@ recipe.ratings && recipe.ratings.length > 0
               {recipe.stepsImages[index] && (
                 <div className="mt-2">
                   <img
-                    src={recipe.stepsImages[index]}
+                    src={`http://localhost:5000/uploads/${recipe.stepsImages[index]}`}
                     alt={`Step ${index + 1}`}
                     className="w-56 h-48 rounded-lg shadow-md"
                   />

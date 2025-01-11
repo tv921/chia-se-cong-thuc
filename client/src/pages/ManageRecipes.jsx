@@ -40,7 +40,7 @@ const ManageRecipes = () => {
         {recipes.map((recipe) => (
           <div key={recipe._id} className="bg-gray-100 p-4 rounded-lg shadow-md">
             <img
-              src={recipe.images}
+              src={`http://localhost:5000/uploads/${recipe.images}`}
               alt={recipe.title}
               className="w-full h-48 object-cover rounded-md mb-4"
             />

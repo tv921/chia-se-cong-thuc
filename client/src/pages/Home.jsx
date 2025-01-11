@@ -64,7 +64,7 @@ function Home() {
                 <p className="text-gray-600 mb-4">Thời gian nấu: {recipe.cookingTime}</p>
                 {recipe.images && (
                   <img
-                    src={recipe.images}
+                    src={`http://localhost:5000/uploads/${recipe.images}`}
                     alt={recipe.title}
                     className="w-full h-32 object-cover rounded-md"
                   />
